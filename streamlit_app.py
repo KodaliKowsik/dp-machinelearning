@@ -3,20 +3,40 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
+# Custom CSS to add background image
+def add_background(image_file):
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background-image: url({image_file});
+             background-size: cover;
+             background-repeat: no-repeat;
+             background-attachment: fixed;
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+
+# Call the function and pass the background image
+add_background('https://namkalam.in/rice-vs-wheat-which-is-healthier/background.jpg')  # Use the actual path or URL
+
+# App title and description
 st.title('Crop suggestion')
 
 st.info('This is app builds a machine learning model!')
 
 with st.expander('Data'):
-  st.write('**Raw data**')
+  st.write('Raw data')
   df = pd.read_csv('https://raw.githubusercontent.com/dataprofessor/data/master/penguins_cleaned.csv')
   df
 
-  st.write('**X**')
+  st.write('X')
   X_raw = df.drop('species', axis=1)
   X_raw
 
-  st.write('**y**')
+  st.write('y')
   y_raw = df.species
   y_raw
 
@@ -44,11 +64,10 @@ with st.sidebar:
   input_penguins = pd.concat([input_df, X_raw], axis=0)
 
 with st.expander('Input features'):
-  st.write('**Input penguin**')
+  st.write('Input penguin')
   input_df
-  st.write('**Combined penguins data**')
+  st.write('Combined penguins data')
   input_penguins
-
 
 # Data preparation
 # Encode X
@@ -68,11 +87,10 @@ def target_encode(val):
 y = y_raw.apply(target_encode)
 
 with st.expander('Data preparation'):
-  st.write('**Encoded X (input penguin)**')
+  st.write('Encoded X (input penguin)')
   input_row
-  st.write('**Encoded y**')
+  st.write('Encoded y')
   y
-
 
 # Model training and inference
 ## Train the ML model
@@ -83,11 +101,7 @@ clf.fit(X, y)
 prediction = clf.predict(input_row)
 prediction_proba = clf.predict_proba(input_row)
 
-df_prediction_proba = pd.DataFrame(prediction_proba)
-df_prediction_proba.columns = ['Adelie', 'Chinstrap', 'Gentoo']
-df_prediction_proba.rename(columns={0: 'Adelie',
-                                 1: 'Chinstrap',
-                                 2: 'Gentoo'})
+df_prediction_proba = pd.DataFrame(prediction_proba, columns=['Adelie', 'Chinstrap', 'Gentoo'])
 
 # Display predicted species
 st.subheader('Predicted Species')
