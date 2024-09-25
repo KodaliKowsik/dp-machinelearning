@@ -3,24 +3,7 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-# Custom CSS to add background image
-def add_background(image_file):
-    st.markdown(
-         f"""
-         <style>
-         .stApp {{
-             background-image: url({image_file});
-             background-size: cover;
-             background-repeat: no-repeat;
-             background-attachment: fixed;
-         }}
-         </style>
-         """,
-         unsafe_allow_html=True
-     )
 
-# Add background image of wheat and paddy fields
-add_background('https://namkalam.in/rice-vs-wheat-which-is-healthier/wheat_paddy_backgroun.jpg')  # Replace with your actual image URL or local file
 
 # Title of the app
 st.title('Crop Recommendation: Wheat or Paddy')
