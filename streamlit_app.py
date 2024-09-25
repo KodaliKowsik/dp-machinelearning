@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-
 # Title of the app
 st.title('Crop Recommendation: Wheat or Paddy')
 
