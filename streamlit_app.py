@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
 # Title of the app
-st.title('Crop Recommendation: Wheat or Paddy')
+st.title('Crop Recommendation: Wheat or Pady')
 
 st.info('This app uses a machine learning model to recommend the best crop (Wheat or Paddy) based on your input!')
 
