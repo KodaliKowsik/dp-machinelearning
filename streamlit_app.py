@@ -19,117 +19,82 @@ def add_background(image_file):
          unsafe_allow_html=True
      )
 
-# Call the function and pass the background image
-add_background('https://namkalam.in/rice-vs-wheat-which-is-healthier/background.jpg')  # Use the actual path or URL
+# Add background image of wheat and paddy fields
+add_background('https://namkalam.in/rice-vs-wheat-which-is-healthier/wheat_paddy_backgroun.jpg')  # Replace with your actual image URL or local file
 
-# App title and description
-st.title('Crop suggestion')
+# Title of the app
+st.title('Crop Recommendation: Wheat or Paddy')
 
-st.info('This is app builds a machine learning model!')
+st.info('This app uses a machine learning model to recommend the best crop (Wheat or Paddy) based on your input!')
+
+# Create a dataset for demonstration purposes (replace with real data in practice)
+# You can replace this with actual crop data for wheat and paddy
+data = {
+    'soil_type': ['Loamy', 'Sandy', 'Clay', 'Loamy', 'Sandy', 'Clay'],
+    'temperature': [20, 30, 25, 18, 32, 28],
+    'rainfall': [200, 150, 220, 180, 140, 160],
+    'humidity': [50, 65, 70, 45, 60, 55],
+    'crop': ['Wheat', 'Paddy', 'Paddy', 'Wheat', 'Paddy', 'Wheat']
+}
+
+df = pd.DataFrame(data)
 
 with st.expander('Data'):
-  st.write('Raw data')
-  df = pd.read_csv('https://raw.githubusercontent.com/dataprofessor/data/master/penguins_cleaned.csv')
-  df
+    st.write('Raw data used for training')
+    st.dataframe(df)
 
-  st.write('X')
-  X_raw = df.drop('species', axis=1)
-  X_raw
-
-  st.write('y')
-  y_raw = df.species
-  y_raw
-
-with st.expander('Data visualization'):
-  st.scatter_chart(data=df, x='bill_length_mm', y='body_mass_g', color='species')
-
-# Input features
+# Input features for the sidebar
 with st.sidebar:
-  st.header('Input features')
-  island = st.selectbox('Island', ('Biscoe', 'Dream', 'Torgersen'))
-  bill_length_mm = st.slider('Bill length (mm)', 32.1, 59.6, 43.9)
-  bill_depth_mm = st.slider('Bill depth (mm)', 13.1, 21.5, 17.2)
-  flipper_length_mm = st.slider('Flipper length (mm)', 172.0, 231.0, 201.0)
-  body_mass_g = st.slider('Body mass (g)', 2700.0, 6300.0, 4207.0)
-  gender = st.selectbox('Gender', ('male', 'female'))
-  
-  # Create a DataFrame for the input features
-  data = {'island': island,
-          'bill_length_mm': bill_length_mm,
-          'bill_depth_mm': bill_depth_mm,
-          'flipper_length_mm': flipper_length_mm,
-          'body_mass_g': body_mass_g,
-          'sex': gender}
-  input_df = pd.DataFrame(data, index=[0])
-  input_penguins = pd.concat([input_df, X_raw], axis=0)
+    st.header('Input Conditions for Your Farm')
+    soil_type = st.selectbox('Soil Type', ('Loamy', 'Sandy', 'Clay'))
+    temperature = st.slider('Temperature (°C)', 10, 45, 25)
+    rainfall = st.slider('Rainfall (mm)', 50, 300, 150)
+    humidity = st.slider('Humidity (%)', 30, 90, 60)
 
+    # Create DataFrame for the input features
+    input_data = {
+        'soil_type': soil_type,
+        'temperature': temperature,
+        'rainfall': rainfall,
+        'humidity': humidity
+    }
+    input_df = pd.DataFrame(input_data, index=[0])
+
+# Display user input
 with st.expander('Input features'):
-  st.write('Input penguin')
-  input_df
-  st.write('Combined penguins data')
-  input_penguins
+    st.write('Here are the conditions you provided:')
+    st.dataframe(input_df)
 
 # Data preparation
-# Encode X
-encode = ['island', 'sex']
-df_penguins = pd.get_dummies(input_penguins, prefix=encode)
+X_raw = df.drop('crop', axis=1)
+y_raw = df['crop']
 
-X = df_penguins[1:]
-input_row = df_penguins[:1]
+# One-hot encode categorical features (soil_type)
+X_encoded = pd.get_dummies(X_raw, columns=['soil_type'])
+input_encoded = pd.get_dummies(input_df, columns=['soil_type'])
 
-# Encode y
-target_mapper = {'Adelie': 0,
-                 'Chinstrap': 1,
-                 'Gentoo': 2}
-def target_encode(val):
-  return target_mapper[val]
+# Ensure input_encoded has the same columns as X_encoded
+input_encoded = input_encoded.reindex(columns=X_encoded.columns, fill_value=0)
 
-y = y_raw.apply(target_encode)
+# Encode the target variable (crop: Wheat=0, Paddy=1)
+target_mapper = {'Wheat': 0, 'Paddy': 1}
+y = y_raw.map(target_mapper)
 
-with st.expander('Data preparation'):
-  st.write('Encoded X (input penguin)')
-  input_row
-  st.write('Encoded y')
-  y
-
-# Model training and inference
-## Train the ML model
+# Model training and prediction
 clf = RandomForestClassifier()
-clf.fit(X, y)
+clf.fit(X_encoded, y)
 
-## Apply model to make predictions
-prediction = clf.predict(input_row)
-prediction_proba = clf.predict_proba(input_row)
+# Prediction for the input data
+prediction = clf.predict(input_encoded)
+prediction_proba = clf.predict_proba(input_encoded)
 
-df_prediction_proba = pd.DataFrame(prediction_proba, columns=['Adelie', 'Chinstrap', 'Gentoo'])
+# Display the prediction probabilities
+df_prediction_proba = pd.DataFrame(prediction_proba, columns=['Wheat', 'Paddy'])
 
-# Display predicted species
-st.subheader('Predicted Species')
-st.dataframe(df_prediction_proba,
-             column_config={
-               'Adelie': st.column_config.ProgressColumn(
-                 'Adelie',
-                 format='%f',
-                 width='medium',
-                 min_value=0,
-                 max_value=1
-               ),
-               'Chinstrap': st.column_config.ProgressColumn(
-                 'Chinstrap',
-                 format='%f',
-                 width='medium',
-                 min_value=0,
-                 max_value=1
-               ),
-               'Gentoo': st.column_config.ProgressColumn(
-                 'Gentoo',
-                 format='%f',
-                 width='medium',
-                 min_value=0,
-                 max_value=1
-               ),
-             }, hide_index=True)
+st.subheader('Prediction Results')
+st.write('Probability for each crop:')
+st.dataframe(df_prediction_proba)
 
-
-penguins_species = np.array(['Adelie', 'Chinstrap', 'Gentoo'])
-st.success(str(penguins_species[prediction][0]))
+# Display the recommended crop
+crops = np.array(['Wheat', 'Paddy'])
+st.success(f'Recommended Crop: {crops[prediction][0]}')
