@@ -9,7 +9,7 @@ def add_background(image_file):
          f"""
          <style>
          .stApp {{
-             background-image: url({image_file});
+             background-image: url({https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FWheat&psig=AOvVaw0PoJMlMCR-XHDZbhjH3LBZ&ust=1729406038979000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMjv7tnpmYkDFQAAAAAdAAAAABAE});
              background-size: cover;
              background-repeat: no-repeat;
              background-attachment: fixed;
