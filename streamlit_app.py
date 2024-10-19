@@ -9,7 +9,7 @@ def add_background(image_file):
          f"""
          <style>
          .stApp {{
-             background-image: url({https://unsplash.com/photos/a-plowed-field-with-trees-in-the-background-OM4hVxinBUc});
+             background-image: url({image_file});
              background-size: cover;
              background-repeat: no-repeat;
              background-attachment: fixed;
