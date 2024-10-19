@@ -9,7 +9,7 @@ def add_background(image_file):
          f"""
          <style>
          .stApp {{
-             background-image: url({https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FWheat&psig=AOvVaw0PoJMlMCR-XHDZbhjH3LBZ&ust=1729406038979000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMjv7tnpmYkDFQAAAAAdAAAAABAE});
+             background-image: url({https://unsplash.com/photos/a-plowed-field-with-trees-in-the-background-OM4hVxinBUc});
              background-size: cover;
              background-repeat: no-repeat;
              background-attachment: fixed;
@@ -20,7 +20,7 @@ def add_background(image_file):
      )
 
 # Add background image of wheat and paddy fields
-add_background('https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FWheat&psig=AOvVaw0PoJMlMCR-XHDZbhjH3LBZ&ust=1729406038979000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMjv7tnpmYkDFQAAAAAdAAAAABAE')  # Replace with your actual image URL or local file
+add_background('https://unsplash.com/photos/a-plowed-field-with-trees-in-the-background-OM4hVxinBUc')  # Replace with your actual image URL or local file
 
 # Title of the app
 st.title('Crop Recommendation: Wheat or Paddy')
