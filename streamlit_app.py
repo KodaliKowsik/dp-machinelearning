@@ -20,7 +20,7 @@ def add_background(image_file):
      )
 
 # Add background image of wheat and paddy fields
-add_background('https://unsplash.com/photos/a-plowed-field-with-trees-in-the-background-OM4hVxinBUc')  # Replace with your actual image URL or local file
+add_background('https://drive.google.com/file/d/1lhLK5kN0SiNm3wLi2_Om2QMm86nGWkuX/view?usp=drive_link')  # Replace with your actual image URL or local file
 
 # Title of the app
 st.title('Crop Recommendation: Wheat or Paddy')
