@@ -6,7 +6,7 @@ from sklearn.ensemble import RandomForestClassifier
 # Title of the app
 st.title('Crop Recommendation: Wheat or Paddy')
 
-st.info('This app uses a machine learning model to recommend the best crop (Wheat or Paddy) based on your input!')
+st.info('This app uses a machine learning model to recommend the best crop (Wheat/Paddy) based on your input!')
 
 # Create a dataset for demonstration purposes (replace with real data in practice)
 # Example dataset with soil nutrients and conditions
