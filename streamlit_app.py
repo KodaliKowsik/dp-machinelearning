@@ -1,31 +1,19 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier   
 
-# Custom CSS to add background image
-def add_background(image_file):
-    st.markdown(
-         f"""
-         <style>
-         .stApp {{
-             background-image: url({image_file});
-             background-size: cover;
-             background-repeat: no-repeat;
-             background-attachment: fixed;
-         }}
-         </style>
-         """,
-         unsafe_allow_html=True
-     )
-
-# Add background image of wheat and paddy fields
-add_background('https://i.postimg.cc/kgHLg4YL/premium-photo-1698086768776-2fe137e167df.avif')  # Replace with your actual image URL or local file
 
 # Title of the app
 st.title('Crop Recommendation: Wheat or Paddy')
 
-st.info('This app uses a machine learning model to recommend the best crop (Wheat or Paddy) based on your input!')
+st.info('This app uses a machine learning model to recommend the best crop (Wheat or Paddy) based on your input!', icon="")  # Added icon
+
+# Set background image
+st.set_page_config(page_title="Crop Recommendation App", page_icon="", layout="wide")  # Improved layout and title
+
+with st.container():
+    st.image("https://namkalam.in/wp-content/uploads/2021/07/rice-vs-wheat-which-is-healthier.jpg", use_column_width=True)  # Display background image
 
 # Create a dataset for demonstration purposes (replace with real data in practice)
 # Example dataset with soil nutrients and conditions
@@ -50,12 +38,12 @@ with st.expander('Data'):
 # Input features for the sidebar
 with st.sidebar:
     st.header('Input Conditions for Your Farm')
-    
+
     soil_type = st.selectbox('Soil Type', ('Loamy', 'Sandy', 'Clay'))
     temperature = st.slider('Temperature (°C)', 10, 45, 25)
     rainfall = st.slider('Rainfall (mm)', 50, 300, 150)
     humidity = st.slider('Humidity (%)', 30, 90, 60)
-    
+
     nitrogen = st.slider('Nitrogen (N) level', 0, 100, 50)
     phosphorus = st.slider('Phosphorus (P) level', 0, 100, 30)
     sulphur = st.slider('Sulphur (S) level', 0, 100, 20)
@@ -86,29 +74,3 @@ y_raw = df['crop']
 # One-hot encode categorical features (soil_type)
 X_encoded = pd.get_dummies(X_raw, columns=['soil_type'])
 input_encoded = pd.get_dummies(input_df, columns=['soil_type'])
-
-# Ensure input_encoded has the same columns as X_encoded
-input_encoded = input_encoded.reindex(columns=X_encoded.columns, fill_value=0)
-
-# Encode the target variable (crop: Wheat=0, Paddy=1)
-target_mapper = {'Wheat': 0, 'Paddy': 1}
-y = y_raw.map(target_mapper)
-
-# Model training and prediction
-clf = RandomForestClassifier()
-clf.fit(X_encoded, y)
-
-# Prediction for the input data
-prediction = clf.predict(input_encoded)
-prediction_proba = clf.predict_proba(input_encoded)
-
-# Display the prediction probabilities
-df_prediction_proba = pd.DataFrame(prediction_proba, columns=['Wheat', 'Paddy'])
-
-st.subheader('Prediction Results')
-st.write('Probability for each crop:')
-st.dataframe(df_prediction_proba)
-
-# Display the recommended crop
-crops = np.array(['Wheat', 'Paddy'])
-st.success(f'Recommended Crop: {crops[prediction][0]}')
