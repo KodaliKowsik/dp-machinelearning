@@ -9,25 +9,6 @@ USER_CREDENTIALS = {
     "user1": "cropapp2024"
 }
 
-# Add custom CSS for background image
-def add_background(image_file):
-    st.markdown(
-         f"""
-         <style>
-         .stApp {{
-             background-image: url({image_file});
-             background-size: cover;
-             background-repeat: no-repeat;
-             background-attachment: fixed;
-         }}
-         </style>
-         """,
-         unsafe_allow_html=True
-     )
-
-# Add background image of wheat and paddy fields
-add_background('https://i.postimg.cc/kgHLg4YL/premium-photo-1698086768776-2fe137e167df.avif')
-
 # Initialize session state for login
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
