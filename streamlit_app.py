@@ -6,7 +6,9 @@ from sklearn.ensemble import RandomForestClassifier
 # Define user credentials (for demonstration)
 USER_CREDENTIALS = {
     "admin": "password123",
-    "user1": "cropapp2024"
+    "kowsik": "password1",
+    "bhargav": "password2",
+    "anirudh": "password3"
 }
 
 # Add custom CSS for background image
