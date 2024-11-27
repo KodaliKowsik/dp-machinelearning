@@ -9,35 +9,24 @@ USER_CREDENTIALS = {
     "user1": "cropapp2024"
 }
 
-# Add custom CSS for background image with text overlay
-def add_background_with_overlay(image_url):
+# Add custom CSS for background image
+def add_background(image_file):
     st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url({image_url});
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: white;
-        }}
-        .stApp::before {{
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for readability */
-            z-index: -1;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+         f"""
+         <style>
+         .stApp {{
+             background-image: url({image_file});
+             background-size: cover;
+             background-repeat: no-repeat;
+             background-attachment: fixed;
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
 
-# Add paddy field background
-add_background_with_overlay("https://i.postimg.cc/kgHLg4YL/premium-photo-1698086768776-2fe137e167df.avif")
+# Add background image of wheat and paddy fields
+add_background('https://i.postimg.cc/kgHLg4YL/premium-photo-1698086768776-2fe137e167df.avif')
 
 # Initialize session state for login
 if "logged_in" not in st.session_state:
